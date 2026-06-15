@@ -14,6 +14,17 @@ def test_health():
     assert r.json() == {"status": "ok"}
 
 
+def test_robots_library_lists_builtins():
+    r = client.get("/api/robots")
+    assert r.status_code == 200
+    robots = r.json()
+    ids = {rb["id"] for rb in robots}
+    assert {"esp32_qtr8", "lego_ev3", "arduino_2wd"} <= ids
+    esp = next(rb for rb in robots if rb["id"] == "esp32_qtr8")
+    assert esp["sensor_count_options"] == [8]
+    assert esp["builtin"] is True
+
+
 def test_upload_robot_then_list():
     r = client.post(
         "/api/admin/robots",

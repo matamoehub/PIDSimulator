@@ -8,7 +8,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.logging_config import configure_logging
-from app.routers import admin, health
+from app.routers import admin, health, robots
 
 configure_logging()
 
@@ -32,6 +32,7 @@ app.add_middleware(
 )
 
 app.include_router(health.router, prefix="/api")
+app.include_router(robots.router, prefix="/api")
 app.include_router(admin.router, prefix="/api")
 
 

@@ -6,3 +6,9 @@ export async function getHealth() {
   if (!res.ok) throw new Error(`API ${res.status}`)
   return res.json()
 }
+
+export async function getRobots() {
+  const res = await fetch(`${BASE}/robots`)
+  if (!res.ok) throw new Error(`API ${res.status}`)
+  return res.json()
+}

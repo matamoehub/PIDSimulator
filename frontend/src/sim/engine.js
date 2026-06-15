@@ -39,6 +39,13 @@ export class Engine {
     this.reset()
   }
 
+  setPlatform(platform) {
+    this.platform = platform
+    const opts = platform.sensor_count_options || [this.sensorCount]
+    if (!opts.includes(this.sensorCount)) this.sensorCount = opts[0]
+    this.reset()
+  }
+
   setSensorCount(n) {
     this.sensorCount = n
   }

@@ -36,6 +36,7 @@ export function useSimulation(initial = {}) {
   }, [engine])
 
   const setTrack = useCallback((name) => { engine.setTrack(name); reset() }, [engine, reset])
+  const setPlatform = useCallback((p) => { engine.setPlatform(p) }, [engine])
   const setSensorCount = useCallback((n) => { engine.setSensorCount(n) }, [engine])
   const setPid = useCallback((g) => { engine.setPid(g) }, [engine])
   const setBaseSpeed = useCallback((v) => { engine.setBaseSpeed(v) }, [engine])
@@ -44,6 +45,6 @@ export function useSimulation(initial = {}) {
   return {
     engine, tick, running,
     start, pause, reset,
-    setTrack, setSensorCount, setPid, setBaseSpeed, setTsMs,
+    setTrack, setPlatform, setSensorCount, setPid, setBaseSpeed, setTsMs,
   }
 }
