@@ -80,7 +80,8 @@ export default function Simulator() {
           <span>L {Math.round(sim.tick.left_speed)} · R {Math.round(sim.tick.right_speed)}</span>
         </div>
 
-        <div className="canvas-stage mb-3">
+        {/* Track at 75% width, centred in the column */}
+        <div className="canvas-stage mb-3" style={{ width: '75%', margin: '0 auto' }}>
           <TrackCanvas track={sim.engine.track} tick={sim.tick} />
         </div>
 
