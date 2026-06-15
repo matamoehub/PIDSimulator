@@ -116,11 +116,24 @@ const SHAPES = {
   ),
   ir16: (
     <>
-      <Wheels x0={2} x1={54} y={22} h={24} />
-      <rect x="11" y="16" width="42" height="36" rx="3" fill={G} />
-      <rect x="10" y="10" width="44" height="6" rx="2" fill={DARK} />
-      <Sensors n={8} x0={14} x1={50} y={13} r={1.5} />
-      <Sensors n={8} x0={16} x1={48} y={13} r={1.5} />
+      {/* rear purple foam wheels */}
+      <rect x="2" y="40" width="14" height="18" rx="3" fill="#6f5f93" />
+      <rect x="48" y="40" width="14" height="18" rx="3" fill="#6f5f93" />
+      <circle cx="9" cy="49" r="2.5" fill="#241f30" />
+      <circle cx="55" cy="49" r="2.5" fill="#241f30" />
+      {/* control board + OLED */}
+      <rect x="20" y="24" width="24" height="34" rx="3" fill="#1b1f24" />
+      <rect x="25" y="30" width="14" height="14" rx="1" fill="#1d6fb8" />
+      <rect x="27" y="32" width="10" height="10" fill="#7ec7ff" />
+      {/* wide curved sensor wing */}
+      <path
+        d="M6,32 Q4,14 16,9 Q26,5 32,4 Q38,5 48,9 Q60,14 58,32 L52,32 Q52,16 40,12 Q34,10 32,9 Q30,10 24,12 Q12,16 12,32 Z"
+        fill="#15171a"
+      />
+      {[...Array(16)].map((_, i) => {
+        const t = (i / 15) * 2 - 1
+        return <circle key={i} cx={32 + t * 24} cy={13 + t * t * 8} r="1.2" fill="#c8a93a" />
+      })}
     </>
   ),
   fast: (

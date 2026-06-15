@@ -11,8 +11,46 @@ function rr(ctx, x, y, w, h, r) {
 export function drawRobot(ctx, kind, lost) {
   if (kind === 'maqueen') return drawMaqueen(ctx, lost)
   if (kind === 'cheetah') return drawCheetah(ctx, lost)
+  if (kind === 'ir16') return drawIr16(ctx, lost)
   if (kind === 'fast') return drawFast(ctx, lost)
   return drawGeneric(ctx, lost)
+}
+
+// ESP32 + wide 16-IR array (from the photo): a broad curved "wing" sensor board
+// up front with 16 gold pads, an OLED control board, and big purple foam wheels
+// at the rear.
+function drawIr16(ctx, lost) {
+  // rear wheels (large purple foam)
+  ctx.fillStyle = '#6f5f93'
+  rr(ctx, -54, -45, 30, 19, 5); ctx.fill()
+  rr(ctx, -54, 26, 30, 19, 5); ctx.fill()
+  ctx.fillStyle = '#241f30'
+  for (const y of [-35, 35]) { ctx.beginPath(); ctx.arc(-30, y, 4, 0, 7); ctx.fill() }
+
+  // control board + OLED
+  ctx.fillStyle = '#1b1f24'; rr(ctx, -46, -17, 64, 34, 4); ctx.fill()
+  ctx.fillStyle = '#1d6fb8'; rr(ctx, -2, -9, 16, 18, 2); ctx.fill()
+  ctx.fillStyle = '#7ec7ff'; rr(ctx, 0, -6, 12, 12, 1); ctx.fill()
+
+  // wide curved sensor wing at the front
+  const wing = () => {
+    ctx.beginPath()
+    ctx.moveTo(14, -60); ctx.lineTo(22, -54)
+    ctx.quadraticCurveTo(34, -22, 37, 0)
+    ctx.quadraticCurveTo(34, 22, 22, 54); ctx.lineTo(14, 60); ctx.lineTo(9, 54)
+    ctx.quadraticCurveTo(25, 20, 25, 0)
+    ctx.quadraticCurveTo(25, -20, 9, -54); ctx.closePath()
+  }
+  ctx.fillStyle = '#15171a'; wing(); ctx.fill()
+
+  // 16 gold sensor pads along the swept leading edge
+  ctx.fillStyle = '#c8a93a'
+  for (let i = 0; i < 16; i++) {
+    const t = (i / 15) * 2 - 1
+    ctx.beginPath(); ctx.arc(30 - 12 * t * t, t * 56, 1.8, 0, 7); ctx.fill()
+  }
+
+  if (lost) { ctx.strokeStyle = '#d64545'; ctx.lineWidth = 2.5; wing(); ctx.stroke() }
 }
 
 // DFRobot Maqueen (from the top-down photos): two tyres at the REAR, a 3xAAA
