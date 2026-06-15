@@ -21,6 +21,8 @@ export default function Simulator() {
   const [kd, setKd] = useState(20)
   const [base, setBase] = useState(150)
   const [ts, setTs] = useState(10)
+  const [showTrail, setShowTrail] = useState(true)
+  const [trailNonce, setTrailNonce] = useState(0)
 
   // Load the platform library; apply the default platform to the engine.
   useEffect(() => {
@@ -109,6 +111,23 @@ export default function Simulator() {
           <Button size="sm" variant="danger" onClick={onStop}>Stop</Button>
           <Button size="sm" variant="outline-secondary" onClick={sim.reset}>Reset</Button>
         </div>
+
+        <div className="d-flex align-items-center justify-content-between mt-3">
+          <Form.Check
+            type="switch"
+            id="trail-toggle"
+            label="Show trail"
+            checked={showTrail}
+            onChange={(e) => setShowTrail(e.target.checked)}
+          />
+          <Button
+            size="sm"
+            variant="outline-secondary"
+            onClick={() => setTrailNonce((n) => n + 1)}
+          >
+            Clear trail
+          </Button>
+        </div>
       </Col>
 
       {/* Column 2 — Main: forward-looking sensor bar, track, then telemetry */}
@@ -125,7 +144,12 @@ export default function Simulator() {
 
         {/* Track at ~56% width (75% of previous), centred in the column */}
         <div className="canvas-stage mb-3" style={{ width: '56%', margin: '0 auto' }}>
-          <TrackCanvas track={sim.engine.track} tick={sim.tick} />
+          <TrackCanvas
+            track={sim.engine.track}
+            tick={sim.tick}
+            showTrail={showTrail}
+            trailNonce={trailNonce}
+          />
         </div>
 
         <h6 className="section-label text-uppercase">Telemetry</h6>

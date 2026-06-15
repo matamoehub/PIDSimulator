@@ -3,12 +3,14 @@ import { useEffect, useRef } from 'react'
 // Imperative canvas renderer. Redraws on each new tick: the track centre line,
 // a fading trail of where the robot has been, the robot body, and the sensor
 // bar (bright = sensor over the line, dim = over background).
-export default function TrackCanvas({ track, tick, width = 660, height = 480 }) {
+export default function TrackCanvas({
+  track, tick, width = 660, height = 480, showTrail = true, trailNonce = 0,
+}) {
   const canvasRef = useRef(null)
   const trailRef = useRef([])
 
-  // Reset the trail whenever the track changes.
-  useEffect(() => { trailRef.current = [] }, [track])
+  // Reset the trail when the track changes or a clear is requested.
+  useEffect(() => { trailRef.current = [] }, [track, trailNonce])
 
   useEffect(() => {
     const canvas = canvasRef.current
@@ -46,7 +48,7 @@ export default function TrackCanvas({ track, tick, width = 660, height = 480 }) 
       trail.push({ x: tick.x, y: tick.y })
       if (trail.length > 600) trail.shift()
     }
-    if (trail.length > 1) {
+    if (showTrail && trail.length > 1) {
       ctx.strokeStyle = 'rgba(126,190,197,0.85)' // mat-teal
       ctx.lineWidth = 2.5
       ctx.beginPath()
@@ -83,7 +85,7 @@ export default function TrackCanvas({ track, tick, width = 660, height = 480 }) 
       ctx.lineWidth = 1
       ctx.stroke()
     })
-  }, [track, tick, width, height])
+  }, [track, tick, width, height, showTrail, trailNonce])
 
   return (
     <canvas

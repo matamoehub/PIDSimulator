@@ -67,10 +67,10 @@ deploy/     nginx config
 ## Milestones (Phase 1)
 
 - [x] **M0** Scaffold + nginx deploy path
-- [ ] **M1** Sim engine (physics, PID, sensors) — pure JS, unit-tested
-- [ ] **M2** Canvas rendering + telemetry graphs
-- [ ] **M3** Controls + platform library API
+- [x] **M1** Sim engine (physics, PID, sensors) — pure JS, unit-tested
+- [x] **M2** Canvas rendering + telemetry graphs
+- [x] **M3** Controls + platform library API
+- [ ] **M5** Guided teaching mode *(prioritised ahead of M4)*
 - [ ] **M4** Calibration wizard
-- [ ] **M5** Guided teaching mode
 - [ ] **M6** Auto-save + polish
 ```
