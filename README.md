@@ -70,7 +70,7 @@ deploy/     nginx config
 - [x] **M1** Sim engine (physics, PID, sensors) — pure JS, unit-tested
 - [x] **M2** Canvas rendering + telemetry graphs
 - [x] **M3** Controls + platform library API
-- [ ] **M5** Guided teaching mode *(prioritised ahead of M4)*
+- [x] **M5** Guided teaching mode *(prioritised ahead of M4)*
 - [ ] **M4** Calibration wizard
 - [ ] **M6** Auto-save + polish
 ```

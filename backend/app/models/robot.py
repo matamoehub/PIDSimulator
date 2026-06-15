@@ -20,6 +20,7 @@ class RobotPlatform(BaseModel):
     sensor_response_time_ms: float = Field(..., gt=0)
     loop_time_ms: float = Field(..., gt=0)
     code_target: str
+    icon: str | None = None  # top-down icon key (see frontend RobotIcon)
 
     @field_validator("id")
     @classmethod

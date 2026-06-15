@@ -135,6 +135,27 @@ h1, h2, h3, h4, h5, h6,
   box-shadow: 0 0 6px rgba(77, 129, 96, 0.6);
 }
 
+/* Guided teaching: highlighted control + wizard panel */
+.tt-highlight {
+  border-radius: 10px;
+  outline: 2px solid var(--mat-green);
+  outline-offset: 4px;
+  animation: tt-pulse 1.4s ease-in-out infinite;
+}
+@keyframes tt-pulse {
+  0%, 100% { outline-color: var(--mat-green); }
+  50% { outline-color: var(--mat-teal); }
+}
+.wizard-panel {
+  border-left: 5px solid var(--mat-green);
+}
+.wizard-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
 /* Telemetry: 2-column grid of vertical (forward-perspective) graphs */
 .telemetry-grid {
   display: grid;
