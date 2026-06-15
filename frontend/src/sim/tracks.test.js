@@ -3,12 +3,12 @@ import { TRACK_NAMES, buildTrack, listTracks } from './tracks.js'
 import { distanceToPath } from './geometry.js'
 
 describe('tracks', () => {
-  it('lists all eight Phase 1 tracks', () => {
+  it('lists all Phase 1 tracks', () => {
     expect(TRACK_NAMES).toEqual([
-      'straight', 'circle', 'oval', 'rectangle',
+      'straight', 'circle', 'oval', 'rectangle', 'curved_rectangle',
       'square', 'infinity', 'chicane', 'competition',
     ])
-    expect(listTracks()).toHaveLength(8)
+    expect(listTracks()).toHaveLength(9)
   })
 
   it.each(TRACK_NAMES)('%s: start pose sits on the line', (name) => {

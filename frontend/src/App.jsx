@@ -6,8 +6,8 @@ import Admin from './components/Admin.jsx'
 export default function App() {
   return (
     <>
-      <Navbar bg="dark" variant="dark" className="app-topbar px-3 border-bottom">
-        <Navbar.Brand as={Link} to="/">Line Follower PID Simulator</Navbar.Brand>
+      <Navbar variant="dark" className="app-topbar px-3 navbar-matamoe">
+        <Navbar.Brand as={Link} to="/">Matamoe · Line Follower PID</Navbar.Brand>
         <Nav className="ms-auto">
           <Nav.Link as={Link} to="/">Simulator</Nav.Link>
           <Nav.Link as={Link} to="/admin">Admin</Nav.Link>

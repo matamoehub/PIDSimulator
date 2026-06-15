@@ -84,6 +84,22 @@ const builders = {
     return make('rectangle', 'Rectangle', 'Intermediate', pts, true)
   },
 
+  curved_rectangle: () => {
+    // Rounded-corner rectangle: straights joined by quarter-circle corners.
+    const left = 220, right = 780, top = 180, bot = 520, r = 90
+    const pts = [
+      ...line({ x: left + r, y: top }, { x: right - r, y: top }),
+      ...arc(right - r, top + r, r, -Math.PI / 2, 0),
+      ...line({ x: right, y: top + r }, { x: right, y: bot - r }),
+      ...arc(right - r, bot - r, r, 0, Math.PI / 2),
+      ...line({ x: right - r, y: bot }, { x: left + r, y: bot }),
+      ...arc(left + r, bot - r, r, Math.PI / 2, Math.PI),
+      ...line({ x: left, y: bot - r }, { x: left, y: top + r }),
+      ...arc(left + r, top + r, r, Math.PI, (3 * Math.PI) / 2),
+    ]
+    return make('curved_rectangle', 'Curved Rectangle', 'Beginner', pts, true)
+  },
+
   square: () => {
     const c = [
       { x: 300, y: 150 }, { x: 700, y: 150 },

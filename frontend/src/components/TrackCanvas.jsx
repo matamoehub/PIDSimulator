@@ -25,14 +25,14 @@ export default function TrackCanvas({ track, tick, width = 660, height = 480 }) 
     const sx = (p) => p.x * scale + offX
     const sy = (p) => p.y * scale + offY
 
-    // Background
-    ctx.fillStyle = '#15171c'
+    // Background — clean light track surface (Matamoe)
+    ctx.fillStyle = '#ffffff'
     ctx.fillRect(0, 0, width, height)
 
-    // Track centre line
+    // Track centre line — black line on white (realistic line-follower track)
     ctx.lineJoin = 'round'
     ctx.lineCap = 'round'
-    ctx.strokeStyle = '#e9edf2'
+    ctx.strokeStyle = '#2d3940'
     ctx.lineWidth = Math.max(2, track.lineWidthMm * scale)
     ctx.beginPath()
     track.points.forEach((p, i) =>
@@ -47,8 +47,8 @@ export default function TrackCanvas({ track, tick, width = 660, height = 480 }) 
       if (trail.length > 600) trail.shift()
     }
     if (trail.length > 1) {
-      ctx.strokeStyle = 'rgba(78,161,255,0.55)'
-      ctx.lineWidth = 2
+      ctx.strokeStyle = 'rgba(126,190,197,0.85)' // mat-teal
+      ctx.lineWidth = 2.5
       ctx.beginPath()
       trail.forEach((p, i) =>
         i === 0 ? ctx.moveTo(sx(p), sy(p)) : ctx.lineTo(sx(p), sy(p)))
@@ -63,7 +63,7 @@ export default function TrackCanvas({ track, tick, width = 660, height = 480 }) 
     ctx.rotate(tick.heading)
     const L = 60 * scale
     const W = 70 * scale
-    ctx.fillStyle = tick.line_lost ? '#ff5c5c' : '#4cd964'
+    ctx.fillStyle = tick.line_lost ? '#d64545' : '#4d8160' // mat green / red
     ctx.beginPath()
     ctx.moveTo(L * 0.6, 0)
     ctx.lineTo(-L * 0.4, W * 0.5)
@@ -77,9 +77,9 @@ export default function TrackCanvas({ track, tick, width = 660, height = 480 }) 
     pts.forEach((p, i) => {
       ctx.beginPath()
       ctx.arc(sx(p), sy(p), Math.max(3, 4.5 * scale * 0.9), 0, 2 * Math.PI)
-      ctx.fillStyle = tick.sensor_active?.[i] ? '#ffffff' : '#586074'
+      ctx.fillStyle = tick.sensor_active?.[i] ? '#4d8160' : '#c2cdc4'
       ctx.fill()
-      ctx.strokeStyle = '#11131a'
+      ctx.strokeStyle = '#2d3940'
       ctx.lineWidth = 1
       ctx.stroke()
     })

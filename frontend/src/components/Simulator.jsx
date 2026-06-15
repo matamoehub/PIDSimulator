@@ -18,7 +18,6 @@ export default function Simulator() {
   const [base, setBase] = useState(150)
   const [ts, setTs] = useState(10)
 
-  // Push live control changes into the engine without restarting the run.
   useEffect(() => { sim.setPid({ kp, ki, kd }) }, [kp, ki, kd]) // eslint-disable-line
   useEffect(() => { sim.setBaseSpeed(base) }, [base]) // eslint-disable-line
   useEffect(() => { sim.setTsMs(ts) }, [ts]) // eslint-disable-line
@@ -28,9 +27,9 @@ export default function Simulator() {
 
   return (
     <Row className="g-0 app-body">
-      {/* Controls */}
-      <Col xs={3} className="panel panel-controls p-3">
-        <h6 className="text-uppercase text-secondary">Controls</h6>
+      {/* Column 1 — Controls */}
+      <Col xs={12} md={3} className="panel panel-controls p-3">
+        <h6 className="section-label text-uppercase">Controls</h6>
 
         <Form.Group className="mb-3">
           <Form.Label className="small mb-1">Track</Form.Label>
@@ -62,30 +61,30 @@ export default function Simulator() {
           {sim.running ? (
             <Button size="sm" variant="warning" onClick={sim.pause}>Pause</Button>
           ) : (
-            <Button size="sm" variant="success" onClick={sim.start}>Start</Button>
+            <Button size="sm" variant="primary" onClick={sim.start}>Start</Button>
           )}
-          <Button size="sm" variant="outline-light" onClick={sim.reset}>Reset</Button>
+          <Button size="sm" variant="outline-secondary" onClick={sim.reset}>Reset</Button>
         </div>
       </Col>
 
-      {/* Canvas */}
-      <Col xs={6} className="panel p-3">
-        <div className="d-flex justify-content-between mb-2">
-          <span className="small text-secondary">
-            t = {((sim.tick.elapsed_ms || 0) / 1000).toFixed(1)}s
-          </span>
+      {/* Column 2 — Main: forward-looking sensor bar, track, then telemetry */}
+      <Col xs={12} md={9} className="panel p-3">
+        {/* Sensor bar at top = robot's forward-looking view */}
+        <div className="mat-card sensor-bar mb-2">
+          <SensorLeds tick={sim.tick} />
+        </div>
+
+        <div className="d-flex justify-content-between align-items-center mb-2 small text-muted px-1">
+          <span>t = {((sim.tick.elapsed_ms || 0) / 1000).toFixed(1)}s</span>
           {sim.tick.line_lost && <Badge bg="danger">line lost</Badge>}
-          <span className="small text-secondary">
-            L {Math.round(sim.tick.left_speed)} · R {Math.round(sim.tick.right_speed)}
-          </span>
+          <span>L {Math.round(sim.tick.left_speed)} · R {Math.round(sim.tick.right_speed)}</span>
         </div>
-        <TrackCanvas track={sim.engine.track} tick={sim.tick} />
-        <SensorBar tick={sim.tick} />
-      </Col>
 
-      {/* Telemetry */}
-      <Col xs={3} className="panel panel-telemetry p-3">
-        <h6 className="text-uppercase text-secondary">Telemetry</h6>
+        <div className="canvas-stage mb-3">
+          <TrackCanvas track={sim.engine.track} tick={sim.tick} />
+        </div>
+
+        <h6 className="section-label text-uppercase">Telemetry</h6>
         <Telemetry tick={sim.tick} />
       </Col>
     </Row>
@@ -97,7 +96,7 @@ function Slider({ label, value, min, max, step, onChange }) {
     <Form.Group className="mb-2">
       <div className="d-flex justify-content-between small">
         <span>{label}</span>
-        <code className="text-secondary">{value}</code>
+        <code className="text-muted">{value}</code>
       </div>
       <Form.Range
         min={min}
@@ -110,22 +109,12 @@ function Slider({ label, value, min, max, step, onChange }) {
   )
 }
 
-// Top-down sensor strip: the bar the robot "sees", lit where over the line.
-function SensorBar({ tick }) {
+function SensorLeds({ tick }) {
   const active = tick.sensor_active || []
-  return (
-    <div className="d-flex justify-content-center gap-1 mt-2">
-      {active.map((on, i) => (
-        <span
-          key={i}
-          title={`sensor ${i}`}
-          style={{
-            width: 16, height: 16, borderRadius: '50%',
-            background: on ? '#ffffff' : '#3a4150',
-            border: '1px solid #11131a',
-          }}
-        />
-      ))}
-    </div>
-  )
+  if (active.length === 0) {
+    return <span className="small text-muted">sensors — press Start</span>
+  }
+  return active.map((on, i) => (
+    <span key={i} title={`sensor ${i}`} className={`sensor-led${on ? ' on' : ''}`} />
+  ))
 }

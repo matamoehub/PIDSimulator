@@ -1,9 +1,27 @@
+/* Matamoe Hub branding — mirrors MatamoeBookings' matamoe-theme.css */
 :root {
-  /* Telemetry colour coding from the spec / IDLINESIM reference. */
-  --tel-error: #4ea1ff;
-  --tel-p: #ff5c5c;
-  --tel-i: #4cd964;
-  --tel-d: #ff9f40;
+  --mat-green: #4d8160;
+  --mat-green-dark: #3a6149;
+  --mat-green-light: #83b075;
+  --mat-teal: #7ebec5;
+  --mat-teal-light: #c2e4e8;
+  --mat-purple: #6804cc;
+  --mat-bg: #f7f8f5;
+  --mat-white: #ffffff;
+  --mat-text: #2d3940;
+  --mat-text-muted: #666;
+  --mat-border: #d6e8da;
+  --mat-card-radius: 20px;
+
+  /* Telemetry signal colours (kept distinct + functional) */
+  --tel-error: #2b7fb8;
+  --tel-p: #d64545;
+  --tel-i: #4d8160;
+  --tel-d: #e08a1e;
+
+  /* Map Bootstrap primary onto Matamoe green */
+  --bs-primary: var(--mat-green);
+  --bs-primary-rgb: 77, 129, 96;
 }
 
 html,
@@ -13,48 +31,119 @@ body,
   margin: 0;
 }
 
+body {
+  background-color: var(--mat-bg);
+  color: var(--mat-text);
+  font-family: 'Lexend', system-ui, sans-serif;
+  font-weight: 400;
+}
+
+h1, h2, h3, h4, h5, h6,
+.navbar-brand {
+  font-family: 'Changa One', system-ui, sans-serif;
+  color: var(--mat-green);
+}
+
 #root {
   display: flex;
   flex-direction: column;
 }
 
+/* Top nav in Matamoe green */
+.navbar-matamoe {
+  background-color: var(--mat-green) !important;
+}
+.navbar-matamoe .navbar-brand,
+.navbar-matamoe .nav-link {
+  color: #fff !important;
+}
+.navbar-matamoe .nav-link:hover {
+  color: var(--mat-teal-light) !important;
+}
+
 .app-topbar {
   flex: 0 0 auto;
 }
-
 .app-body {
   flex: 1 1 auto;
   min-height: 0;
 }
 
-/* Three-panel layout: controls | canvas | telemetry */
+/* Buttons: primary = Matamoe green, rounded */
+.btn-primary {
+  background-color: var(--mat-green);
+  border-color: var(--mat-green);
+  color: #fff;
+  font-weight: 500;
+}
+.btn-primary:hover,
+.btn-primary:focus {
+  background-color: var(--mat-green-dark);
+  border-color: var(--mat-green-dark);
+}
+.btn {
+  border-radius: 12px;
+  font-weight: 500;
+}
+
+/* Cards / panels */
+.mat-card {
+  background: var(--mat-white);
+  border: 1.5px solid var(--mat-border);
+  border-radius: var(--mat-card-radius);
+}
+
 .panel {
   height: 100%;
   overflow-y: auto;
 }
-
 .panel-controls {
-  border-right: 1px solid var(--bs-border-color);
+  background: var(--mat-white);
+  border-right: 1px solid var(--mat-border);
 }
 
-.panel-telemetry {
-  border-left: 1px solid var(--bs-border-color);
+.section-label {
+  font-family: 'Changa One', sans-serif;
+  color: var(--mat-green);
+  letter-spacing: 0.02em;
 }
 
+/* The simulation canvas reads as a clean track surface */
 .canvas-stage {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
+  background: var(--mat-white);
+  border: 1.5px solid var(--mat-border);
+  border-radius: var(--mat-card-radius);
+  overflow: hidden;
 }
 
-.canvas-placeholder {
-  border: 1px dashed var(--bs-border-color);
-  border-radius: 0.5rem;
-  width: 90%;
-  aspect-ratio: 4 / 3;
+/* Sensor bar (forward-looking) */
+.sensor-bar {
   display: flex;
-  align-items: center;
   justify-content: center;
-  color: var(--bs-secondary-color);
+  gap: 6px;
+  padding: 8px;
+}
+.sensor-led {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 1px solid var(--mat-border);
+  background: #e6ebe7;
+}
+.sensor-led.on {
+  background: var(--mat-green);
+  box-shadow: 0 0 6px rgba(77, 129, 96, 0.6);
+}
+
+/* Telemetry: 2-column grid of vertical (forward-perspective) graphs */
+.telemetry-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.telemetry-cell {
+  background: var(--mat-white);
+  border: 1.5px solid var(--mat-border);
+  border-radius: 14px;
+  padding: 8px 10px;
 }
