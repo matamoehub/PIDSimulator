@@ -80,7 +80,7 @@ export default function Simulator() {
             variant={teachOn ? 'success' : 'outline-success'}
             onClick={() => setTeachOn((v) => !v)}
           >
-            Guided
+            Tutorial
           </Button>
         </div>
 

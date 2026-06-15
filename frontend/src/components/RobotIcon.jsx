@@ -43,7 +43,7 @@ const SHAPES = {
       <circle cx="28" cy="34" r="1.3" fill="#ffcf3a" />
       <circle cx="32" cy="34" r="1.3" fill="#ffcf3a" />
       <circle cx="36" cy="34" r="1.3" fill="#ffcf3a" />
-      <Sensors n={2} x0={27} x1={37} />
+      <Sensors n={3} x0={25} x1={39} />
     </>
   ),
   lego: (

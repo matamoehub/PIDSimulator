@@ -11,7 +11,7 @@ export default function WizardPanel({ index, onIndex, onApply, onClose }) {
     <div className="mat-card wizard-panel p-3 mb-3">
       <div className="d-flex justify-content-between align-items-start">
         <div>
-          <div className="section-label text-uppercase small">Guided teaching</div>
+          <div className="section-label text-uppercase small">Tutorial</div>
           <h6 className="mb-1">{step.title}</h6>
         </div>
         <Button size="sm" variant="outline-secondary" onClick={onClose}>Close</Button>
