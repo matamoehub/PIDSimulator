@@ -24,6 +24,7 @@ export default function Simulator() {
   useEffect(() => { sim.setSensorCount(sensorCount); sim.reset() }, [sensorCount]) // eslint-disable-line
 
   const onTrack = (name) => { setTrackName(name); sim.setTrack(name) }
+  const onStop = () => { sim.pause(); sim.reset() } // halt and return to start
 
   return (
     <Row className="g-0 app-body">
@@ -63,6 +64,7 @@ export default function Simulator() {
           ) : (
             <Button size="sm" variant="primary" onClick={sim.start}>Start</Button>
           )}
+          <Button size="sm" variant="danger" onClick={onStop}>Stop</Button>
           <Button size="sm" variant="outline-secondary" onClick={sim.reset}>Reset</Button>
         </div>
       </Col>
@@ -80,8 +82,8 @@ export default function Simulator() {
           <span>L {Math.round(sim.tick.left_speed)} · R {Math.round(sim.tick.right_speed)}</span>
         </div>
 
-        {/* Track at 75% width, centred in the column */}
-        <div className="canvas-stage mb-3" style={{ width: '75%', margin: '0 auto' }}>
+        {/* Track at ~56% width (75% of previous), centred in the column */}
+        <div className="canvas-stage mb-3" style={{ width: '56%', margin: '0 auto' }}>
           <TrackCanvas track={sim.engine.track} tick={sim.tick} />
         </div>
 
