@@ -43,14 +43,18 @@ Verify: open http://localhost:5173 — the top-right badge should read **API: ok
 
 ## Production (nginx on Linux)
 
+Deploy path on the server: **`/opt/robot/pidsim`** (app root). nginx serves the
+built SPA from `/opt/robot/pidsim/frontend/dist`.
+
 ```bash
 cd frontend && npm run build           # outputs frontend/dist
-# copy frontend/dist to the server, e.g. /var/www/lfr-pid-simulator
 # run the backend (systemd or similar):
 uvicorn app.main:app --host 127.0.0.1 --port 8000
 ```
 
-Use `deploy/nginx.conf` as the site config (set `root` to the dist path).
+Use `deploy/nginx.conf` as the site config. Server-specific conventions (service
+user, systemd unit, TLS/subdomain, backend port) are being aligned with the
+existing MatamoeBookings deployment on the same host.
 
 ## Layout
 
