@@ -8,8 +8,10 @@ venv/
 node_modules/
 frontend/dist/
 
-# Runtime data (admin-uploaded robots/courses) — must survive `git pull`
-data/
+# Runtime data (admin-uploaded robots/courses) — must survive `git pull`.
+# Anchored to the repo root so it does NOT match the built-in platform
+# catalogue under backend/app/data/.
+/data/
 
 # Logs — keep the directory, ignore the log files
 logs/*

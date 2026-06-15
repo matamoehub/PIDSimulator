@@ -4,14 +4,14 @@
   "sensor_count_options": [
     3
   ],
-  "sensor_spacing_mm": 14.0,
-  "motor_max_rpm": 200,
+  "sensor_spacing_mm": 13.0,
+  "motor_max_rpm": 180,
   "motor_speed_range": [
     0,
     255
   ],
-  "default_base_speed": 100,
-  "sensor_response_time_ms": 3.0,
+  "default_base_speed": 90,
+  "sensor_response_time_ms": 1.0,
   "loop_time_ms": 20,
   "code_target": "microbit",
   "icon": "maqueen"
