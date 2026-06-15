@@ -1,10 +1,11 @@
 import { useEffect, useRef } from 'react'
+import { drawRobot } from './robotDraw.js'
 
 // Imperative canvas renderer. Redraws on each new tick: the track centre line,
 // a fading trail of where the robot has been, the robot body, and the sensor
 // bar (bright = sensor over the line, dim = over background).
 export default function TrackCanvas({
-  track, tick, width = 660, height = 480, showTrail = true, trailNonce = 0,
+  track, tick, robotKind, width = 660, height = 480, showTrail = true, trailNonce = 0,
 }) {
   const canvasRef = useRef(null)
   const trailRef = useRef([])
@@ -59,19 +60,12 @@ export default function TrackCanvas({
 
     if (!tick) return
 
-    // Robot body (triangle pointing along heading)
+    // Robot drawn top-down, oriented along heading (front = +x)
     ctx.save()
     ctx.translate(sx(tick), sy(tick))
     ctx.rotate(tick.heading)
-    const L = 60 * scale
-    const W = 70 * scale
-    ctx.fillStyle = tick.line_lost ? '#d64545' : '#4d8160' // mat green / red
-    ctx.beginPath()
-    ctx.moveTo(L * 0.6, 0)
-    ctx.lineTo(-L * 0.4, W * 0.5)
-    ctx.lineTo(-L * 0.4, -W * 0.5)
-    ctx.closePath()
-    ctx.fill()
+    ctx.scale(scale, scale) // draw the robot in millimetres
+    drawRobot(ctx, robotKind, tick.line_lost)
     ctx.restore()
 
     // Sensor bar LEDs
@@ -85,7 +79,7 @@ export default function TrackCanvas({
       ctx.lineWidth = 1
       ctx.stroke()
     })
-  }, [track, tick, width, height, showTrail, trailNonce])
+  }, [track, tick, robotKind, width, height, showTrail, trailNonce])
 
   return (
     <canvas

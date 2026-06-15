@@ -37,13 +37,26 @@ function Studs() {
 const SHAPES = {
   maqueen: (
     <>
-      <Wheels y={22} />
-      <circle cx="32" cy="33" r="19" fill={G} />
-      <rect x="24" y="28" width="16" height="13" rx="2" fill="#1b1f24" />
-      <circle cx="28" cy="34" r="1.3" fill="#ffcf3a" />
-      <circle cx="32" cy="34" r="1.3" fill="#ffcf3a" />
-      <circle cx="36" cy="34" r="1.3" fill="#ffcf3a" />
-      <Sensors n={3} x0={25} x1={39} />
+      {/* tyres */}
+      <rect x="3" y="20" width="9" height="22" rx="3" fill="#15171a" />
+      <rect x="52" y="20" width="9" height="22" rx="3" fill="#15171a" />
+      <circle cx="7.5" cy="31" r="2" fill="#b9952f" />
+      <circle cx="56.5" cy="31" r="2" fill="#b9952f" />
+      {/* chassis with pointed front (nose up) */}
+      <polygon points="32,6 47,18 47,52 17,52 17,18" fill="#262b32" />
+      {/* battery pack (rear) */}
+      <rect x="20" y="34" width="24" height="18" rx="2" fill="#3c434d" />
+      <line x1="28" y1="34" x2="28" y2="52" stroke="#2a2f37" />
+      <line x1="36" y1="34" x2="36" y2="52" stroke="#2a2f37" />
+      {/* micro:bit edge connector */}
+      <rect x="18" y="30" width="28" height="3" rx="1" fill="#c8a93a" />
+      {/* ultrasonic eyes */}
+      <circle cx="26" cy="18" r="4" fill="#9aa3ad" stroke="#3a3f45" />
+      <circle cx="38" cy="18" r="4" fill="#9aa3ad" stroke="#3a3f45" />
+      {/* line sensors at the nose */}
+      <circle cx="28" cy="10" r="1.6" fill={SENSE} />
+      <circle cx="32" cy="9" r="1.6" fill={SENSE} />
+      <circle cx="36" cy="10" r="1.6" fill={SENSE} />
     </>
   ),
   lego: (

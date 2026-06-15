@@ -185,6 +185,7 @@ export default function Simulator() {
           <TrackCanvas
             track={sim.engine.track}
             tick={sim.tick}
+            robotKind={platform.icon}
             showTrail={showTrail}
             trailNonce={trailNonce}
           />
