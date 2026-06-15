@@ -53,8 +53,21 @@ matamoe ALL=(root) NOPASSWD: /bin/systemctl reload pidsim-api.service, /bin/syst
 
 Both run the full test suite and abort the deploy if anything fails.
 
-## Security note
+## Admin login
 
-`/admin` and `/api/admin/*` are **unauthenticated**. Before this host is
-reachable off the LAN, restrict them — uncomment the `allow`/`deny` block in
-`nginx.conf`, and/or add SSL + auth.
+`/admin` and `/api/admin/*` are locked behind HTTP Basic Auth (user **admin**).
+Create the password file once (this sets the PIN to 6767):
+
+```bash
+printf "admin:$(openssl passwd -apr1 6767)\n" | sudo tee /opt/robot/pidsim/deploy/.htpasswd
+sudo chown matamoe:matamoe /opt/robot/pidsim/deploy/.htpasswd
+sudo chmod 640 /opt/robot/pidsim/deploy/.htpasswd
+sudo systemctl reload nginx
+```
+
+The file is gitignored, so it persists across deploys and is never committed.
+To change the PIN later, re-run the command with a new value.
+
+**Note:** on plain HTTP the PIN is sent unencrypted. Add SSL before exposing
+this widely, and optionally also restrict `/api/admin/` by source IP (the
+`allow`/`deny` block in `nginx.conf`).
