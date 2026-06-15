@@ -8,6 +8,12 @@ venv/
 node_modules/
 frontend/dist/
 
+# Runtime data (admin-uploaded robots/courses) — must survive `git pull`
+data/
+
+# nginx basic-auth file (if ever used)
+deploy/.htpasswd
+
 # Editor / OS
 .DS_Store
 .vscode/
