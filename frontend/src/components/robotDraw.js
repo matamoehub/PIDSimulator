@@ -10,42 +10,72 @@ function rr(ctx, x, y, w, h, r) {
 
 export function drawRobot(ctx, kind, lost) {
   if (kind === 'maqueen') return drawMaqueen(ctx, lost)
+  if (kind === 'cheetah') return drawCheetah(ctx, lost)
   if (kind === 'fast') return drawFast(ctx, lost)
   return drawGeneric(ctx, lost)
 }
 
-// DFRobot Maqueen (from the top-down photo): two big tyres on the sides, a
-// 3xAAA battery pack at the rear, the micro:bit edge connector across the
-// middle, and a pointed front PCB with two ultrasonic "eyes".
+// DFRobot Maqueen (from the top-down photos): two tyres at the REAR, a 3xAAA
+// battery pack between them, the micro:bit edge connector across the middle,
+// and a pointed front PCB with two ultrasonic eyes + three close line sensors.
 function drawMaqueen(ctx, lost) {
-  // tyres (protrude on the sides)
+  // tyres at the rear
   ctx.fillStyle = '#15171a'
-  rr(ctx, -18, -39, 26, 13, 3); ctx.fill()
-  rr(ctx, -18, 26, 26, 13, 3); ctx.fill()
+  rr(ctx, -50, -40, 26, 13, 3); ctx.fill()
+  rr(ctx, -50, 27, 26, 13, 3); ctx.fill()
   ctx.fillStyle = '#b9952f' // brass hubs
-  for (const y of [-32, 32]) { ctx.beginPath(); ctx.arc(-5, y, 2.4, 0, 7); ctx.fill() }
+  for (const y of [-33, 33]) { ctx.beginPath(); ctx.arc(-37, y, 2.4, 0, 7); ctx.fill() }
 
   // chassis with pointed nose at +x
   const body = () => {
     ctx.beginPath()
-    ctx.moveTo(-44, -25); ctx.lineTo(15, -25); ctx.lineTo(34, 0)
-    ctx.lineTo(15, 25); ctx.lineTo(-44, 25); ctx.closePath()
+    ctx.moveTo(-46, -26); ctx.lineTo(15, -26); ctx.lineTo(34, 0)
+    ctx.lineTo(15, 26); ctx.lineTo(-46, 26); ctx.closePath()
   }
   ctx.fillStyle = '#262b32'; body(); ctx.fill()
 
-  // battery pack (rear)
-  ctx.fillStyle = '#3c434d'; rr(ctx, -42, -20, 30, 40, 3); ctx.fill()
+  // battery pack (rear, between the wheels)
+  ctx.fillStyle = '#3c434d'; rr(ctx, -44, -18, 28, 36, 3); ctx.fill()
   ctx.strokeStyle = '#2a2f37'; ctx.lineWidth = 1
-  for (const y of [-6.7, 6.7]) { ctx.beginPath(); ctx.moveTo(-42, y); ctx.lineTo(-12, y); ctx.stroke() }
+  for (const y of [-6, 6]) { ctx.beginPath(); ctx.moveTo(-44, y); ctx.lineTo(-16, y); ctx.stroke() }
 
-  // micro:bit edge connector
-  ctx.fillStyle = '#c8a93a'; rr(ctx, -10, -22, 4, 44, 1); ctx.fill()
+  // micro:bit edge connector (mid)
+  ctx.fillStyle = '#c8a93a'; rr(ctx, -2, -20, 4, 40, 1); ctx.fill()
 
   // ultrasonic eyes near the nose
   ctx.fillStyle = '#9aa3ad'; ctx.strokeStyle = '#3a3f45'; ctx.lineWidth = 0.8
-  for (const y of [-9, 9]) { ctx.beginPath(); ctx.arc(20, y, 4.5, 0, 7); ctx.fill(); ctx.stroke() }
+  for (const y of [-9, 9]) { ctx.beginPath(); ctx.arc(22, y, 4.2, 0, 7); ctx.fill(); ctx.stroke() }
 
   if (lost) { ctx.strokeStyle = '#d64545'; ctx.lineWidth = 2.5; body(); ctx.stroke() }
+}
+
+// Cheetah Fast LFR (from the photo): blue hourglass chassis, red 8-sensor PCB
+// at the front, white sensors on the front corners, small wheels at the rear.
+function drawCheetah(ctx, lost) {
+  // rear wheels
+  ctx.fillStyle = '#15171a'
+  rr(ctx, -54, -39, 26, 13, 3); ctx.fill()
+  rr(ctx, -54, 26, 26, 13, 3); ctx.fill()
+  ctx.fillStyle = '#b9952f'
+  for (const y of [-32, 32]) { ctx.beginPath(); ctx.arc(-30, y, 2.2, 0, 7); ctx.fill() }
+
+  // blue acrylic chassis: front lobe + rear lobe joined by a waist
+  ctx.fillStyle = '#2f86d8'
+  rr(ctx, 4, -34, 28, 68, 12); ctx.fill()    // front lobe
+  rr(ctx, -58, -32, 30, 64, 12); ctx.fill()  // rear lobe
+  rr(ctx, -32, -18, 40, 36, 6); ctx.fill()   // waist
+
+  // red sensor PCB across the front
+  ctx.fillStyle = '#c0392b'; rr(ctx, 24, -30, 10, 60, 2); ctx.fill()
+
+  // white front-corner sensors
+  ctx.fillStyle = '#efe9da'; ctx.strokeStyle = '#cfc8b6'; ctx.lineWidth = 0.8
+  for (const y of [-30, 30]) { ctx.beginPath(); ctx.arc(24, y, 4.5, 0, 7); ctx.fill(); ctx.stroke() }
+
+  if (lost) {
+    ctx.strokeStyle = '#d64545'; ctx.lineWidth = 2.5
+    rr(ctx, 24, -30, 10, 60, 2); ctx.stroke()
+  }
 }
 
 // Competition wedge.

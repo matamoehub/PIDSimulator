@@ -4,7 +4,7 @@
   "sensor_count_options": [
     3
   ],
-  "sensor_spacing_mm": 13.0,
+  "sensor_spacing_mm": 10.0,
   "motor_max_rpm": 180,
   "motor_speed_range": [
     0,

@@ -16,6 +16,6 @@
   "sensor_response_time_ms": 1.0,
   "loop_time_ms": 4,
   "code_target": "arduino",
-  "icon": "fast",
+  "icon": "cheetah",
   "wheel_diameter_mm": 25.0
 }
