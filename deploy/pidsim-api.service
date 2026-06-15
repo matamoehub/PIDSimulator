@@ -1,0 +1,23 @@
+# systemd unit for the FastAPI backend.
+# Install:
+#   sudo cp /opt/robot/pidsim/deploy/pidsim-api.service /etc/systemd/system/
+#   sudo systemctl daemon-reload
+#   sudo systemctl enable --now pidsim-api
+#
+# The service runs as matamoe:matamoe and binds to localhost; nginx proxies to it.
+
+[Unit]
+Description=Matamoe Line Follower PID Simulator API
+After=network.target
+
+[Service]
+Type=simple
+User=matamoe
+Group=matamoe
+WorkingDirectory=/opt/robot/pidsim/backend
+ExecStart=/opt/robot/pidsim/backend/.venv/bin/uvicorn app.main:app --host 127.0.0.1 --port 8000
+Restart=on-failure
+RestartSec=2
+
+[Install]
+WantedBy=multi-user.target
