@@ -9,6 +9,10 @@ import { PID } from './pid.js'
 import { readSensors } from './sensors.js'
 import { stepKinematics } from './robot.js'
 import { buildTrack } from './tracks.js'
+import { distanceToPath } from './geometry.js'
+
+// How far off the line counts as "off the course" -> stop the run.
+export const OFF_COURSE_MM = 150
 
 export const DEFAULT_PLATFORM = {
   id: 'esp32_qtr8',
@@ -93,25 +97,35 @@ export class Engine {
       spacingMm: this.platform.sensor_spacing_mm,
     })
 
-    // Line-lost policy (Phase 1): keep steering the way we last saw the line
-    // and ease off the throttle so the robot can reacquire it.
-    let error = sense.error
-    if (sense.lineLost) error = this.lastError
-    else this.lastError = error
+    // Line-lost policy: drive STRAIGHT (no steering) rather than chasing the
+    // last error, and don't wind up / kick the controller while blind.
+    const [lo, hi] = this.platform.motor_speed_range
+    let p = 0
+    let i = this.pid.integral
+    let d = 0
+    let output = 0
+    let error = 0
+    if (sense.lineLost) {
+      this.pid.started = false // re-acquire without a derivative kick
+    } else {
+      error = sense.error
+      const r = this.pid.step(error, ts)
+      p = r.p; i = r.i; d = r.d; output = r.output
+      this.lastError = error
+    }
 
-    const { p, i, d, output } = this.pid.step(error, ts)
-
-    const speedScale = sense.lineLost ? 0.5 : 1
-    const base = this.baseSpeed * speedScale
     // Positive error => line is to the robot's right => steer right
     // (right wheel faster). In x-right / y-down coords that increases heading.
-    const [lo, hi] = this.platform.motor_speed_range
+    const base = this.baseSpeed
     const left = clamp(base - output, lo, hi)
     const right = clamp(base + output, lo, hi)
 
     this.pose = stepKinematics(this.pose, left, right, ts, this.speedPerCommand)
     this.ticks += 1
     this.elapsedMs += this.tsMs
+
+    const offLine = distanceToPath(this.pose, this.track.points, this.track.closed)
+    const outOfBounds = offLine > OFF_COURSE_MM
 
     return {
       x: this.pose.x,
@@ -127,6 +141,8 @@ export class Engine {
       left_speed: left,
       right_speed: right,
       line_lost: sense.lineLost,
+      off_line_mm: offLine,
+      out_of_bounds: outOfBounds,
       tick_ms: this.tsMs,
       elapsed_ms: this.elapsedMs,
     }

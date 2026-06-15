@@ -149,6 +149,34 @@ h1, h2, h3, h4, h5, h6,
 .wizard-panel {
   border-left: 5px solid var(--mat-green);
 }
+.wizard-watch {
+  flex: 0 0 84px;
+  background: var(--mat-bg);
+  border: 1.5px solid var(--mat-border);
+  border-radius: 12px;
+  padding: 8px;
+  text-align: center;
+  align-self: flex-start;
+}
+.wizard-watch-title {
+  font-family: 'Changa One', sans-serif;
+  font-size: 0.6rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--mat-text-muted);
+  margin-bottom: 4px;
+}
+.wizard-watch-item {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 4px;
+}
+.wizard-watch-val {
+  font-family: 'Changa One', sans-serif;
+  font-size: 1.4rem;
+  line-height: 1.1;
+  color: var(--mat-green);
+}
 .wizard-dot {
   width: 14px;
   height: 14px;

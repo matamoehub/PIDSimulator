@@ -168,6 +168,7 @@ export default function Simulator() {
             onIndex={setStepIndex}
             onApply={applyLesson}
             onClose={() => setTeachOn(false)}
+            values={{ kp, ki, kd, base, ts }}
           />
         )}
 
@@ -177,7 +178,11 @@ export default function Simulator() {
 
         <div className="d-flex justify-content-between align-items-center mb-2 small text-muted px-1">
           <span>t = {((sim.tick.elapsed_ms || 0) / 1000).toFixed(1)}s</span>
-          {sim.tick.line_lost && <Badge bg="danger">line lost</Badge>}
+          {sim.tick.out_of_bounds ? (
+            <Badge bg="dark">off course — stopped</Badge>
+          ) : sim.tick.line_lost ? (
+            <Badge bg="warning" text="dark">line lost — driving straight</Badge>
+          ) : null}
           <span>L {Math.round(sim.tick.left_speed)} · R {Math.round(sim.tick.right_speed)}</span>
         </div>
 

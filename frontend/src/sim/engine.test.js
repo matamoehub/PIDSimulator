@@ -49,6 +49,27 @@ describe('Engine', () => {
     expect(dFast).toBeGreaterThan(dSlow)
   })
 
+  it('drives straight (no steering) when the line is lost', () => {
+    const e = new Engine({ track: 'straight', pid: { kp: 30, ki: 0, kd: 20 } })
+    e.pose = { x: 300, y: 120, heading: 0 } // far from the line -> lost
+    const t = e.step()
+    expect(t.line_lost).toBe(true)
+    expect(Math.round(t.left_speed)).toBe(Math.round(t.right_speed))
+  })
+
+  it('flags out_of_bounds when far off the course', () => {
+    const e = new Engine({ track: 'straight' })
+    e.pose = { x: 300, y: 600, heading: 0 }
+    expect(e.step().out_of_bounds).toBe(true)
+  })
+
+  it('stays in bounds while following', () => {
+    const e = new Engine({ track: 'circle', pid: { kp: 24, ki: 0, kd: 20 } })
+    let everyOut = false
+    for (let i = 0; i < 400; i++) if (e.step().out_of_bounds) everyOut = true
+    expect(everyOut).toBe(false)
+  })
+
   it('reset returns the robot to the track start', () => {
     const e = new Engine({ track: 'oval' })
     run(e, 50)

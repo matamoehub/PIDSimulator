@@ -22,7 +22,11 @@ export function useSimulation(initial = {}) {
     loopRef.current = createLoop(
       () => engine.step(),
       () => engine.tsMs,
-      (t) => setTick(t),
+      (t) => {
+        setTick(t)
+        // Stop automatically if the robot leaves the course.
+        if (t.out_of_bounds) { loopRef.current.stop(); setRunning(false) }
+      },
     )
   }
 
