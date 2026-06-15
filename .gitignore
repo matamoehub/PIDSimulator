@@ -11,6 +11,10 @@ frontend/dist/
 # Runtime data (admin-uploaded robots/courses) — must survive `git pull`
 data/
 
+# Logs — keep the directory, ignore the log files
+logs/*
+!logs/.gitkeep
+
 # nginx basic-auth file (if ever used)
 deploy/.htpasswd
 

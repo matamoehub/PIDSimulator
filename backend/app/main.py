@@ -7,7 +7,10 @@ helpers, and (Phase 3) code generation. See README for the deployment model.
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from app.logging_config import configure_logging
 from app.routers import admin, health
+
+configure_logging()
 
 app = FastAPI(
     title="Line Follower PID Simulator API",

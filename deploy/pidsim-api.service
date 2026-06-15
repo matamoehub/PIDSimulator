@@ -22,11 +22,14 @@ User=matamoe
 Group=matamoe
 WorkingDirectory=/opt/robot/pidsim/backend
 Environment=PIDSIM_DATA_DIR=/opt/robot/pidsim/data
+Environment=PIDSIM_LOG_DIR=/opt/robot/pidsim/logs
 ExecStart=/opt/robot/pidsim/backend/.venv/bin/gunicorn app.main:app \
     --workers 2 \
     --worker-class uvicorn.workers.UvicornWorker \
     --bind 127.0.0.1:8700 \
-    --timeout 120
+    --timeout 120 \
+    --access-logfile /opt/robot/pidsim/logs/gunicorn-access.log \
+    --error-logfile /opt/robot/pidsim/logs/gunicorn-error.log
 ExecReload=/bin/kill -HUP $MAINPID
 Restart=on-failure
 RestartSec=2

@@ -15,7 +15,16 @@ DATA_DIR = Path(os.environ.get("PIDSIM_DATA_DIR", REPO_ROOT / "data"))
 TRACKS_DIR = DATA_DIR / "tracks"
 ROBOTS_DIR = DATA_DIR / "robots"
 
+# Logs live inside the app dir (gitignored) alongside data. In production
+# systemd sets PIDSIM_LOG_DIR=/opt/robot/pidsim/logs; locally defaults to
+# <repo>/logs.
+LOG_DIR = Path(os.environ.get("PIDSIM_LOG_DIR", REPO_ROOT / "logs"))
+
 
 def ensure_data_dirs() -> None:
     TRACKS_DIR.mkdir(parents=True, exist_ok=True)
     ROBOTS_DIR.mkdir(parents=True, exist_ok=True)
+
+
+def ensure_log_dir() -> None:
+    LOG_DIR.mkdir(parents=True, exist_ok=True)
