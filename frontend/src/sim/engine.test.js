@@ -49,12 +49,13 @@ describe('Engine', () => {
     expect(dFast).toBeGreaterThan(dSlow)
   })
 
-  it('drives straight (no steering) when the line is lost', () => {
-    const e = new Engine({ track: 'straight', pid: { kp: 30, ki: 0, kd: 20 } })
-    e.pose = { x: 300, y: 120, heading: 0 } // far from the line -> lost
+  it('keeps steering toward the last-seen side when the line is lost (real PID)', () => {
+    const e = new Engine({ track: 'straight', pid: { kp: 30, ki: 0, kd: 0 } })
+    e.lastError = 2 // line was last seen to the right
+    e.pose = { x: 300, y: 120, heading: 0 } // off the line -> lost
     const t = e.step()
     expect(t.line_lost).toBe(true)
-    expect(Math.round(t.left_speed)).toBe(Math.round(t.right_speed))
+    expect(t.right_speed).toBeGreaterThan(t.left_speed) // still steering, not straight
   })
 
   it('flags out_of_bounds when far off the course', () => {

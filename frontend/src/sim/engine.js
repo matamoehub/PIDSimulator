@@ -97,22 +97,22 @@ export class Engine {
       spacingMm: this.platform.sensor_spacing_mm,
     })
 
-    // Line-lost policy: drive STRAIGHT (no steering) rather than chasing the
-    // last error, and don't wind up / kick the controller while blind.
+    // Real PID line-follower behaviour. When every sensor is off the line the
+    // position is held at the last-seen extreme (as QTR-style sensor libraries
+    // do), so the controller keeps steering hard toward where the line vanished
+    // and whips around to reacquire it. PID runs every tick — there is no
+    // separate "drive straight" mode.
     const [lo, hi] = this.platform.motor_speed_range
-    let p = 0
-    let i = this.pid.integral
-    let d = 0
-    let output = 0
-    let error = 0
+    let error
     if (sense.lineLost) {
-      this.pid.started = false // re-acquire without a derivative kick
+      const maxErr = (this.sensorCount - 1) / 2
+      error = this.lastError >= 0 ? maxErr : -maxErr
     } else {
       error = sense.error
-      const r = this.pid.step(error, ts)
-      p = r.p; i = r.i; d = r.d; output = r.output
       this.lastError = error
     }
+
+    const { p, i, d, output } = this.pid.step(error, ts)
 
     // Positive error => line is to the robot's right => steer right
     // (right wheel faster). In x-right / y-down coords that increases heading.
