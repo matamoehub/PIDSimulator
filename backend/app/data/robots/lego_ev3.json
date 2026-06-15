@@ -1,0 +1,19 @@
+{
+  "id": "lego_ev3",
+  "name": "LEGO EV3",
+  "sensor_count_options": [
+    2,
+    1
+  ],
+  "sensor_spacing_mm": 20.0,
+  "motor_max_rpm": 250,
+  "motor_speed_range": [
+    0,
+    100
+  ],
+  "default_base_speed": 40,
+  "sensor_response_time_ms": 5.0,
+  "loop_time_ms": 20,
+  "code_target": "block_python",
+  "icon": "lego"
+}

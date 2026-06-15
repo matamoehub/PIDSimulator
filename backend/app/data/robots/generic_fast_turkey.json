@@ -1,0 +1,20 @@
+{
+  "id": "generic_fast_turkey",
+  "name": "Generic Fast LFR (Turkey)",
+  "sensor_count_options": [
+    8,
+    12,
+    16
+  ],
+  "sensor_spacing_mm": 8.0,
+  "motor_max_rpm": 6000,
+  "motor_speed_range": [
+    0,
+    255
+  ],
+  "default_base_speed": 200,
+  "sensor_response_time_ms": 1.0,
+  "loop_time_ms": 4,
+  "code_target": "arduino",
+  "icon": "fast"
+}

@@ -1,0 +1,18 @@
+{
+  "id": "esp32_qtr8",
+  "name": "ESP32 with QTR-8RC (8 sensors)",
+  "sensor_count_options": [
+    8
+  ],
+  "sensor_spacing_mm": 10.16,
+  "motor_max_rpm": 300,
+  "motor_speed_range": [
+    0,
+    255
+  ],
+  "default_base_speed": 150,
+  "sensor_response_time_ms": 2.5,
+  "loop_time_ms": 10,
+  "code_target": "arduino",
+  "icon": "qtr8"
+}

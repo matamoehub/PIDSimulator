@@ -1,0 +1,22 @@
+{
+  "id": "arduino_2wd",
+  "name": "Generic Arduino (2WD)",
+  "sensor_count_options": [
+    1,
+    2,
+    3,
+    5,
+    8
+  ],
+  "sensor_spacing_mm": 11.0,
+  "motor_max_rpm": 200,
+  "motor_speed_range": [
+    0,
+    255
+  ],
+  "default_base_speed": 120,
+  "sensor_response_time_ms": 3.0,
+  "loop_time_ms": 10,
+  "code_target": "arduino",
+  "icon": "arduino"
+}
