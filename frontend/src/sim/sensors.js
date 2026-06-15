@@ -7,7 +7,8 @@
 
 import { distanceToPath } from './geometry.js'
 
-export const SENSOR_FORWARD_OFFSET_MM = 40 // look-ahead of the bar
+export const SENSOR_FORWARD_OFFSET_MM = 30 // look-ahead of the bar (balances
+// curve-tracking offset vs. anticipation on tight S-curves)
 const READING_MAX = 1000
 
 // Per-sensor reflectance reading in [0, 1000] from distance to the line.
