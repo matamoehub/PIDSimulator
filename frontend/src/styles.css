@@ -1,0 +1,60 @@
+:root {
+  /* Telemetry colour coding from the spec / IDLINESIM reference. */
+  --tel-error: #4ea1ff;
+  --tel-p: #ff5c5c;
+  --tel-i: #4cd964;
+  --tel-d: #ff9f40;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+}
+
+.app-topbar {
+  flex: 0 0 auto;
+}
+
+.app-body {
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+/* Three-panel layout: controls | canvas | telemetry */
+.panel {
+  height: 100%;
+  overflow-y: auto;
+}
+
+.panel-controls {
+  border-right: 1px solid var(--bs-border-color);
+}
+
+.panel-telemetry {
+  border-left: 1px solid var(--bs-border-color);
+}
+
+.canvas-stage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.canvas-placeholder {
+  border: 1px dashed var(--bs-border-color);
+  border-radius: 0.5rem;
+  width: 90%;
+  aspect-ratio: 4 / 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--bs-secondary-color);
+}
