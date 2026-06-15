@@ -37,6 +37,18 @@ describe('Engine', () => {
     expect(maxDist).toBeLessThan(40) // stays near the line all the way round
   })
 
+  it('top speed scales with motor RPM x wheel diameter', () => {
+    const slow = new Engine({ track: 'straight' })
+    slow.platform = { ...slow.platform, motor_max_rpm: 100, wheel_diameter_mm: 30 }
+    const fast = new Engine({ track: 'straight' })
+    fast.platform = { ...fast.platform, motor_max_rpm: 400, wheel_diameter_mm: 30 }
+    expect(fast.topSpeedMmS).toBeCloseTo(4 * slow.topSpeedMmS)
+    // same command, more ground covered by the faster platform
+    const dSlow = (() => { const x0 = slow.pose.x; for (let i = 0; i < 30; i++) slow.step(); return slow.pose.x - x0 })()
+    const dFast = (() => { const x0 = fast.pose.x; for (let i = 0; i < 30; i++) fast.step(); return fast.pose.x - x0 })()
+    expect(dFast).toBeGreaterThan(dSlow)
+  })
+
   it('reset returns the robot to the track start', () => {
     const e = new Engine({ track: 'oval' })
     run(e, 50)

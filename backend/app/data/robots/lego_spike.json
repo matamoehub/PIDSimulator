@@ -7,7 +7,7 @@
     3
   ],
   "sensor_spacing_mm": 20.0,
-  "motor_max_rpm": 300,
+  "motor_max_rpm": 175,
   "motor_speed_range": [
     0,
     100
@@ -16,5 +16,6 @@
   "sensor_response_time_ms": 4.0,
   "loop_time_ms": 20,
   "code_target": "block_python",
-  "icon": "spike"
+  "icon": "spike",
+  "wheel_diameter_mm": 56.0
 }

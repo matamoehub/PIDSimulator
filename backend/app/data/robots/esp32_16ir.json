@@ -14,5 +14,6 @@
   "sensor_response_time_ms": 1.5,
   "loop_time_ms": 8,
   "code_target": "arduino",
-  "icon": "ir16"
+  "icon": "ir16",
+  "wheel_diameter_mm": 32.0
 }

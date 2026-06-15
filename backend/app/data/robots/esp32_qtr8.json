@@ -14,5 +14,6 @@
   "sensor_response_time_ms": 2.5,
   "loop_time_ms": 10,
   "code_target": "arduino",
-  "icon": "qtr8"
+  "icon": "qtr8",
+  "wheel_diameter_mm": 32.5
 }

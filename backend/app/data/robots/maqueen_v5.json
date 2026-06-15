@@ -14,5 +14,6 @@
   "sensor_response_time_ms": 1.0,
   "loop_time_ms": 20,
   "code_target": "microbit",
-  "icon": "maqueen"
+  "icon": "maqueen",
+  "wheel_diameter_mm": 43.0
 }

@@ -21,6 +21,7 @@ class RobotPlatform(BaseModel):
     loop_time_ms: float = Field(..., gt=0)
     code_target: str
     icon: str | None = None  # top-down icon key (see frontend RobotIcon)
+    wheel_diameter_mm: float | None = None  # drives top linear speed in the sim
 
     @field_validator("id")
     @classmethod

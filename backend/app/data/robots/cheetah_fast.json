@@ -12,9 +12,10 @@
     0,
     255
   ],
-  "default_base_speed": 200,
+  "default_base_speed": 120,
   "sensor_response_time_ms": 1.0,
   "loop_time_ms": 4,
   "code_target": "arduino",
-  "icon": "fast"
+  "icon": "fast",
+  "wheel_diameter_mm": 25.0
 }

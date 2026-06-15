@@ -6,7 +6,7 @@
     1
   ],
   "sensor_spacing_mm": 20.0,
-  "motor_max_rpm": 250,
+  "motor_max_rpm": 170,
   "motor_speed_range": [
     0,
     100
@@ -15,5 +15,6 @@
   "sensor_response_time_ms": 5.0,
   "loop_time_ms": 20,
   "code_target": "block_python",
-  "icon": "lego"
+  "icon": "lego",
+  "wheel_diameter_mm": 56.0
 }

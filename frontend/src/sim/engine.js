@@ -15,6 +15,8 @@ export const DEFAULT_PLATFORM = {
   sensor_count_options: [8],
   sensor_spacing_mm: 12,
   motor_speed_range: [0, 255],
+  motor_max_rpm: 300,
+  wheel_diameter_mm: 32.5,
   loop_time_ms: 10,
   default_base_speed: 150,
 }
@@ -62,6 +64,19 @@ export class Engine {
     this.tsMs = v
   }
 
+  // Top linear speed in mm/s (RPM x wheel circumference).
+  get topSpeedMmS() {
+    const rpm = this.platform.motor_max_rpm || 300
+    const dia = this.platform.wheel_diameter_mm || 32.5
+    return (rpm / 60) * Math.PI * dia
+  }
+
+  // mm/s per motor-command unit (full command -> top speed).
+  get speedPerCommand() {
+    const hi = this.platform.motor_speed_range[1]
+    return this.topSpeedMmS / hi
+  }
+
   reset() {
     this.pose = { ...this.track.start }
     this.pid.reset()
@@ -94,7 +109,7 @@ export class Engine {
     const left = clamp(base - output, lo, hi)
     const right = clamp(base + output, lo, hi)
 
-    this.pose = stepKinematics(this.pose, left, right, ts)
+    this.pose = stepKinematics(this.pose, left, right, ts, this.speedPerCommand)
     this.ticks += 1
     this.elapsedMs += this.tsMs
 

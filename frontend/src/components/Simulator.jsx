@@ -13,6 +13,12 @@ import WizardPanel from './WizardPanel.jsx'
 const TRACKS = listTracks()
 const FALLBACK = { ...DEFAULT_PLATFORM, name: 'ESP32 QTR-8RC (default)', icon: 'qtr8', builtin: true }
 
+// Top linear speed (RPM x wheel circumference), formatted for display.
+function topSpeed(p) {
+  const mmS = ((p.motor_max_rpm || 300) / 60) * Math.PI * (p.wheel_diameter_mm || 32.5)
+  return mmS >= 1000 ? `${(mmS / 1000).toFixed(1)} m/s` : `${Math.round(mmS)} mm/s`
+}
+
 export default function Simulator() {
   const sim = useSimulation({ track: 'circle', pid: { kp: 30, ki: 0, kd: 20 } })
   const [robots, setRobots] = useState([FALLBACK])
@@ -97,8 +103,9 @@ export default function Simulator() {
             </Form.Select>
           </div>
           <div className="text-muted mt-1" style={{ fontSize: '0.72rem' }}>
-            {platform.motor_max_rpm} RPM · range {platform.motor_speed_range?.join('–')} ·
-            {' '}loop {platform.loop_time_ms}ms · {platform.code_target}
+            {platform.motor_max_rpm} RPM · ⌀{platform.wheel_diameter_mm}mm ·
+            {' '}top ~{topSpeed(platform)} · loop {platform.loop_time_ms}ms ·
+            {' '}{platform.code_target}
           </div>
         </Form.Group>
 
