@@ -83,10 +83,25 @@ const SHAPES = {
   ),
   lego: (
     <>
-      <Wheels x0={3} x1={53} y={16} w={9} h={30} />
-      <rect x="14" y="14" width="36" height="38" rx="3" fill={G} />
-      <Studs />
-      <Sensors n={2} x0={26} x1={38} />
+      {/* big wheels (~56mm), mid-body */}
+      <rect x="2" y="18" width="12" height="28" rx="3" fill="#1b1d1f" />
+      <rect x="50" y="18" width="12" height="28" rx="3" fill="#1b1d1f" />
+      <circle cx="8" cy="32" r="3" fill="#d9b43a" />
+      <circle cx="56" cy="32" r="3" fill="#d9b43a" />
+      {/* rear caster */}
+      <circle cx="32" cy="58" r="4" fill="#3a3f45" />
+      {/* brick body */}
+      <rect x="16" y="8" width="32" height="48" rx="5" fill="#e9ecee" stroke="#c1c6ca" />
+      {/* red Technic-beam rails */}
+      <rect x="16" y="8" width="4" height="48" rx="2" fill="#d23b32" />
+      <rect x="44" y="8" width="4" height="48" rx="2" fill="#d23b32" />
+      {/* screen + D-pad */}
+      <rect x="22" y="13" width="20" height="16" rx="2" fill="#c2cabc" />
+      <circle cx="32" cy="42" r="6" fill="#9aa0a6" />
+      <circle cx="32" cy="42" r="2" fill="#6b7176" />
+      {/* front light sensors */}
+      <circle cx="29" cy="9" r="1.6" fill={SENSE} />
+      <circle cx="35" cy="9" r="1.6" fill={SENSE} />
     </>
   ),
   spike: (

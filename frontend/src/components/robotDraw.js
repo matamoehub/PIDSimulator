@@ -12,8 +12,40 @@ export function drawRobot(ctx, kind, lost) {
   if (kind === 'maqueen') return drawMaqueen(ctx, lost)
   if (kind === 'cheetah') return drawCheetah(ctx, lost)
   if (kind === 'ir16') return drawIr16(ctx, lost)
+  if (kind === 'lego') return drawEv3(ctx, lost)
   if (kind === 'fast') return drawFast(ctx, lost)
   return drawGeneric(ctx, lost)
+}
+
+// LEGO EV3 driving base: the white/grey Intelligent Brick (screen + D-pad, red
+// Technic-beam rails), two big 56mm wheels, a front light sensor, rear caster.
+function drawEv3(ctx, lost) {
+  // big wheels (~56mm), mid-body
+  ctx.fillStyle = '#1b1d1f'
+  rr(ctx, -30, -41, 56, 16, 4); ctx.fill()
+  rr(ctx, -30, 25, 56, 16, 4); ctx.fill()
+  ctx.fillStyle = '#d9b43a' // yellow hubs
+  for (const y of [-33, 33]) { ctx.beginPath(); ctx.arc(-2, y, 3, 0, 7); ctx.fill() }
+  // rear caster
+  ctx.fillStyle = '#3a3f45'; ctx.beginPath(); ctx.arc(-58, 0, 5, 0, 7); ctx.fill()
+
+  // brick body
+  const body = () => rr(ctx, -54, -30, 76, 60, 6)
+  ctx.fillStyle = '#e9ecee'; ctx.strokeStyle = '#c1c6ca'; ctx.lineWidth = 1
+  body(); ctx.fill(); ctx.stroke()
+  // red side rails
+  ctx.fillStyle = '#d23b32'
+  rr(ctx, -54, -31, 76, 5, 2); ctx.fill()
+  rr(ctx, -54, 26, 76, 5, 2); ctx.fill()
+  // screen (toward front)
+  ctx.fillStyle = '#c2cabc'; rr(ctx, -26, -18, 30, 24, 2); ctx.fill()
+  // D-pad (toward rear)
+  ctx.fillStyle = '#9aa0a6'; ctx.beginPath(); ctx.arc(-40, 0, 8, 0, 7); ctx.fill()
+  ctx.fillStyle = '#6b7176'; ctx.beginPath(); ctx.arc(-40, 0, 2.6, 0, 7); ctx.fill()
+  // front light-sensor arm
+  ctx.fillStyle = '#b9c0c6'; rr(ctx, 20, -11, 14, 22, 2); ctx.fill()
+
+  if (lost) { ctx.strokeStyle = '#d64545'; ctx.lineWidth = 2.5; body(); ctx.stroke() }
 }
 
 // ESP32 + wide 16-IR array (from the photo): a broad curved "wing" sensor board
