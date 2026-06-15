@@ -179,6 +179,70 @@ Robot platforms: TurboPi (camera arm), LEGO Spike (gripper).
 - Full simulation state saved after every meaningful change
 - Session restore on page reload
 - Named saves (optional) for comparing tuning attempts
+- **Signed-out:** state persists to browser localStorage (single device).
+- **Signed-in:** the same session-state object is persisted server-side, keyed
+  by the student's account, so work resumes on any device across sessions. This
+  is where a signed-in student's saved files/settings live — see
+  *User Accounts & Saved Work* below.
+
+### User Accounts & Saved Work (shared)
+
+Students learn over multiple sessions, so they sign in and their work persists
+to their own account. This is a shared capability across all modules (a student
+has one account; each module saves under it).
+
+**Roles**
+- **Student** — signs in with a **username + numeric PIN**. The PIN is
+  **assigned by a teacher** (no self-registration — keeps it classroom-safe and
+  age-appropriate). Logs in, works, and their settings/files auto-save to their
+  account.
+- **Teacher** — provisions student accounts, assigns and resets PINs, and can
+  view a student's saved work/progress. Teacher tools live behind the existing
+  admin area.
+
+**Sign-in flow**
+1. Student enters username + PIN on a login screen.
+2. Backend validates against the teacher-provisioned account (PINs stored
+   hashed, never in plaintext) and issues a session token.
+3. All subsequent auto-saves and named saves are tied to that account.
+4. Sign-out ends the session; anonymous use (localStorage only) still works for
+   students without an account, and local state can be adopted into the account
+   on first sign-in.
+
+**What gets saved per student** (this *is* the Session State object below, now
+keyed by a real account instead of an anonymous session id):
+- Per module: PID params, base speed, sampling time, selected track/environment
+- Selected robot platform + sensor count
+- Calibration data per robot platform
+- State machine (Phase 2) and code-gen preferences (Phase 3)
+- Named saves (multiple tuning attempts) and wizard/teaching progress
+
+**Where the saved info lives (in the feature set)**
+- It rides on the **Auto-Save** feature: when signed in, the session-state JSON
+  is written **server-side keyed by `user_id`** instead of only localStorage.
+- Storage sits alongside the existing runtime data directory — e.g.
+  `data/users/<user_id>/sessions/…` and an accounts store for usernames +
+  hashed PINs (a small database can replace flat files as it scales). This keeps
+  it consistent with how robots/courses are already stored outside the git tree.
+- Teacher account management is exposed through the admin/ops area.
+
+**API additions**
+
+| Method | Endpoint | Description |
+|---|---|---|
+| POST | /api/auth/login | username + PIN → session token |
+| POST | /api/auth/logout | end the session |
+| GET | /api/users/me | current signed-in account |
+| GET | /api/sessions | list this student's saved/named sessions |
+| GET | /api/sessions/{id} | load a saved session |
+| PUT | /api/sessions/{id} | save/update (the auto-save target) |
+| POST | /api/sessions | create a named save |
+| POST | /api/admin/students | teacher: create a student account |
+| POST | /api/admin/students/{id}/pin | teacher: assign / reset a PIN |
+
+**Roadmap note:** full student accounts were sketched for Phase 5; a lightweight
+sign-in + per-user save is a shared capability that can land earlier, whenever
+multi-session persistence is needed (it does not block the Phase 1 core).
 
 ### State Machine Builder (Phase 2, shared)
 - Visual card-based state editor
@@ -211,10 +275,27 @@ Useful for: Replicating real RoboCup Junior tracks, Turkey fast LFR courses, cus
 
 ## Data Architecture
 
-### Session State (auto-saved, per module)
+### Account (teacher-provisioned)
 ```json
 {
-  "user_id": "session_abc123",
+  "user_id": "u_8f2a",
+  "username": "te_aroha_r",
+  "role": "student",
+  "pin_hash": "...",
+  "created_by": "teacher_id",
+  "created_at": "2026-06-15T09:00:00Z"
+}
+```
+PINs are stored hashed only. Teachers create accounts and assign/reset PINs.
+
+### Session State (auto-saved, per module)
+When signed in, `user_id` references the account above and the object is stored
+server-side under that account; when signed out it is the anonymous session id
+held in localStorage.
+```json
+{
+  "user_id": "u_8f2a",
+  "save_name": "circle attempt 3",
   "module": "line_follower",
   "robot_platform": "esp32_qtr8",
   "calibration": { ... },

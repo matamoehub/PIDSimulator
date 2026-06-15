@@ -346,7 +346,11 @@ Single file download per robot platform. Filename includes platform and date: `l
 ---
 
 ## Out of Scope (Phase 1)
-- User accounts or multi-student sessions
+- User accounts or multi-student sessions — *now a planned shared capability:
+  student sign-in (username + teacher-assigned PIN) with per-user saved
+  files/settings across sessions. See "User Accounts & Saved Work" in
+  `simulator-framework-spec.md`. Not in the Phase 1 core; the engine and
+  auto-save are designed so it can be added without rework.*
 - Mobile responsiveness
 - Custom track builder
 - Actual robot connection / Bluetooth upload
