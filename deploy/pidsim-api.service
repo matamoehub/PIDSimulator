@@ -25,7 +25,7 @@ Environment=PIDSIM_DATA_DIR=/opt/robot/pidsim/data
 ExecStart=/opt/robot/pidsim/backend/.venv/bin/gunicorn app.main:app \
     --workers 2 \
     --worker-class uvicorn.workers.UvicornWorker \
-    --bind 127.0.0.1:8000 \
+    --bind 127.0.0.1:8700 \
     --timeout 120
 ExecReload=/bin/kill -HUP $MAINPID
 Restart=on-failure
