@@ -9,6 +9,7 @@ import TrackCanvas from './TrackCanvas.jsx'
 import Telemetry from './Telemetry.jsx'
 import RobotIcon from './RobotIcon.jsx'
 import WizardPanel from './WizardPanel.jsx'
+import CodePanel from './CodePanel.jsx'
 
 const TRACKS = listTracks()
 const FALLBACK = { ...DEFAULT_PLATFORM, name: 'ESP32 QTR-8RC (default)', icon: 'qtr8', builtin: true }
@@ -34,6 +35,7 @@ export default function Simulator() {
   const [trailNonce, setTrailNonce] = useState(0)
   const [teachOn, setTeachOn] = useState(false)
   const [stepIndex, setStepIndex] = useState(0)
+  const [mainView, setMainView] = useState('telemetry') // 'telemetry' | 'code'
 
   useEffect(() => {
     getRobots()
@@ -169,6 +171,7 @@ export default function Simulator() {
             onApply={applyLesson}
             onClose={() => setTeachOn(false)}
             values={{ kp, ki, kd, base, ts }}
+            onShowCode={() => setMainView('code')}
           />
         )}
 
@@ -196,10 +199,30 @@ export default function Simulator() {
           />
         </div>
 
-        <h6 className={`section-label text-uppercase ${hl('telemetry')}`}>Telemetry</h6>
-        <div className={hl('telemetry')}>
-          <Telemetry tick={sim.tick} />
+        <div className="d-flex align-items-center gap-2 mb-2">
+          <h6 className={`section-label text-uppercase mb-0 ${hl('telemetry')}`}>
+            {mainView === 'telemetry' ? 'Telemetry' : 'Code'}
+          </h6>
+          <div className="ms-auto d-flex gap-1">
+            <Button size="sm" variant={mainView === 'telemetry' ? 'primary' : 'outline-secondary'}
+              onClick={() => setMainView('telemetry')}>Telemetry</Button>
+            <Button size="sm" variant={mainView === 'code' ? 'primary' : 'outline-secondary'}
+              onClick={() => setMainView('code')}>Code</Button>
+          </div>
         </div>
+
+        {mainView === 'telemetry' ? (
+          <div className={hl('telemetry')}>
+            <Telemetry tick={sim.tick} />
+          </div>
+        ) : (
+          <CodePanel
+            kp={kp} ki={ki} kd={kd} base={base} ts={ts}
+            platform={platform}
+            sensorCount={sensorCount}
+            highlight={teachOn ? LESSONS[stepIndex].highlight : []}
+          />
+        )}
       </Col>
     </Row>
   )

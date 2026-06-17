@@ -184,6 +184,96 @@ h1, h2, h3, h4, h5, h6,
   cursor: pointer;
 }
 
+/* ── Code panel ──────────────────────────────────────────────────────────── */
+.code-panel {
+  font-size: 0.82rem;
+}
+.code-block {
+  background: #f4f6f2;
+  border: 1.5px solid var(--mat-border);
+  border-radius: 14px;
+  padding: 14px 18px;
+  font-family: 'Fira Mono', 'Consolas', 'Courier New', monospace;
+  font-size: 0.82rem;
+  line-height: 1.7;
+  color: var(--mat-text);
+  white-space: pre;
+  overflow-x: auto;
+}
+.arduino-code {
+  color: #1a1a2e;
+}
+.cl {
+  min-height: 1.7em;
+}
+/* live value — Matamoe green by default */
+.cv {
+  color: var(--mat-green);
+  font-weight: 700;
+}
+/* highlighted value — pulsing when tutorial focuses it */
+.cv-hl {
+  color: var(--mat-purple);
+  animation: cv-pulse 1.2s ease-in-out infinite;
+}
+@keyframes cv-pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.55; }
+}
+/* comment text */
+.cc {
+  color: var(--mat-text-muted);
+  font-style: italic;
+}
+/* keyword */
+.ck {
+  color: #2b7fb8;
+  font-weight: 600;
+}
+
+/* ── Wizard step checklist ───────────────────────────────────────────────── */
+.wizard-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.wizard-step {
+  display: flex;
+  align-items: flex-start;
+  gap: 4px;
+  font-size: 0.82rem;
+  cursor: pointer;
+  padding: 3px 6px;
+  border-radius: 6px;
+  transition: background 0.15s;
+  line-height: 1.4;
+}
+.wizard-step:hover {
+  background: var(--mat-bg);
+}
+.wizard-step.done {
+  color: var(--mat-text-muted);
+  text-decoration: line-through;
+}
+.wizard-step input[type='checkbox'] {
+  margin-top: 2px;
+  flex-shrink: 0;
+  accent-color: var(--mat-green);
+}
+.wizard-code-link {
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--mat-green);
+  font-weight: 600;
+  font-size: inherit;
+  cursor: pointer;
+  text-decoration: underline;
+}
+.wizard-code-link:hover {
+  color: var(--mat-green-dark);
+}
+
 /* Telemetry: 2-column grid of vertical (forward-perspective) graphs */
 .telemetry-grid {
   display: grid;
