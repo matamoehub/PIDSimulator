@@ -231,6 +231,15 @@ h1, h2, h3, h4, h5, h6,
   font-weight: 600;
 }
 
+/* ── Wizard intro diagram ────────────────────────────────────────────────── */
+.wizard-diagram {
+  background: var(--mat-bg);
+  border: 1.5px solid var(--mat-border);
+  border-radius: 12px;
+  padding: 10px 14px;
+  overflow: hidden;
+}
+
 /* ── Wizard step checklist ───────────────────────────────────────────────── */
 .wizard-steps {
   display: flex;

@@ -66,11 +66,16 @@ export default function Simulator() {
   const onTrack = (name) => { setTrackName(name); sim.setTrack(name) }
   const onStop = () => { sim.pause(); sim.reset() }
 
-  // Apply a lesson's suggested setup (track + gains + speed).
+  // Apply a lesson's suggested setup (track + gains + speed + optional heading offset).
   function applyLesson(s) {
+    if (!s) return
     onTrack(s.track)
     setKp(s.kp); setKi(s.ki); setKd(s.kd); setBase(s.base)
     sim.reset()
+    // Some lessons start the robot slightly off-angle so the effect is visible.
+    if (s.initHeadingDeg != null) {
+      sim.engine.pose.heading = s.initHeadingDeg * (Math.PI / 180)
+    }
   }
 
   // Highlight class for a control when the active lesson references it.
