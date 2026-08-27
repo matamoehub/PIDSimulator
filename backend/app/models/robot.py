@@ -22,6 +22,7 @@ class RobotPlatform(BaseModel):
     code_target: str
     icon: str | None = None  # top-down icon key (see frontend RobotIcon)
     wheel_diameter_mm: float | None = None  # drives top linear speed in the sim
+    wheelbase_mm: float | None = Field(None, gt=0)  # distance between drive wheels; drives turn radius
 
     @field_validator("id")
     @classmethod

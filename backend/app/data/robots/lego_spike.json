@@ -17,5 +17,6 @@
   "loop_time_ms": 20,
   "code_target": "block_python",
   "icon": "spike",
-  "wheel_diameter_mm": 56.0
+  "wheel_diameter_mm": 56.0,
+  "wheelbase_mm": 110
 }

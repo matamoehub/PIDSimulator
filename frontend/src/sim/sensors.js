@@ -32,6 +32,30 @@ export function readSensors(pose, track, { sensorCount, spacingMm }) {
   // forward = (cos, sin); perpendicular (sensor bar axis) = (-sin, cos)
   const fx = pose.x + cos * SENSOR_FORWARD_OFFSET_MM
   const fy = pose.y + sin * SENSOR_FORWARD_OFFSET_MM
+
+  if (sensorCount === 1) {
+    // A lone sensor can't localise the line the way an array's weighted
+    // average can — every reading would collapse to "centred" (error 0)
+    // regardless of where the line actually is. Real one-sensor followers
+    // instead ride the line's edge and steer proportionally to the raw
+    // reflectance (the classic "P-only, 1 sensor" build), so model that:
+    // offset the sensor to the nominal right edge of the line and read its
+    // graded reflectance as the error, saturating at +-0.5 once it's fully
+    // on or fully off.
+    const wp = { x: fx - sin * halfWidth, y: fy + cos * halfWidth }
+    const dist = distanceToPath(wp, track.points, track.closed)
+    const r = readingFromDistance(dist, halfWidth, fadeMm)
+    const error = r / READING_MAX - 0.5
+    return {
+      readings: [r],
+      active: [dist <= halfWidth],
+      position: r / READING_MAX,
+      error,
+      lineLost: false,
+      worldPoints: [wp],
+    }
+  }
+
   const centreIndex = (sensorCount - 1) / 2
 
   const readings = []

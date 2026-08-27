@@ -7,7 +7,7 @@
 
 import { PID } from './pid.js'
 import { readSensors } from './sensors.js'
-import { stepKinematics } from './robot.js'
+import { stepKinematics, WHEEL_BASE_MM } from './robot.js'
 import { buildTrack } from './tracks.js'
 import { distanceToPath } from './geometry.js'
 
@@ -21,6 +21,7 @@ export const DEFAULT_PLATFORM = {
   motor_speed_range: [0, 255],
   motor_max_rpm: 300,
   wheel_diameter_mm: 32.5,
+  wheelbase_mm: WHEEL_BASE_MM,
   loop_time_ms: 10,
   default_base_speed: 150,
 }
@@ -81,6 +82,12 @@ export class Engine {
     return this.topSpeedMmS / hi
   }
 
+  // Distance between the drive wheels; falls back to the generic constant
+  // for platforms that don't specify their own chassis width.
+  get wheelbaseMm() {
+    return this.platform.wheelbase_mm || WHEEL_BASE_MM
+  }
+
   reset() {
     this.pose = { ...this.track.start }
     this.pid.reset()
@@ -120,7 +127,7 @@ export class Engine {
     const left = clamp(base - output, lo, hi)
     const right = clamp(base + output, lo, hi)
 
-    this.pose = stepKinematics(this.pose, left, right, ts, this.speedPerCommand)
+    this.pose = stepKinematics(this.pose, left, right, ts, this.speedPerCommand, this.wheelbaseMm)
     this.ticks += 1
     this.elapsedMs += this.tsMs
 

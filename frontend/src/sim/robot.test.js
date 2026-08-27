@@ -22,4 +22,10 @@ describe('stepKinematics', () => {
     expect(p.y).toBeCloseTo(0)
     expect(p.heading).not.toBeCloseTo(0)
   })
+
+  it('a narrower wheelbase turns more sharply for the same wheel speeds', () => {
+    const narrow = stepKinematics({ x: 0, y: 0, heading: 0 }, 50, 150, 0.1, 2.0, 60)
+    const wide = stepKinematics({ x: 0, y: 0, heading: 0 }, 50, 150, 0.1, 2.0, 120)
+    expect(Math.abs(narrow.heading)).toBeGreaterThan(Math.abs(wide.heading))
+  })
 })

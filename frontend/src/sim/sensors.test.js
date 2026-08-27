@@ -33,4 +33,30 @@ describe('readSensors', () => {
     expect(s.readings).toHaveLength(8)
     expect(s.worldPoints).toHaveLength(8)
   })
+
+  describe('single-sensor (edge-following) mode', () => {
+    const one = { sensorCount: 1, spacingMm: 12 }
+
+    it('is never reported as line lost', () => {
+      const onEdge = readSensors({ x: 300, y: 350, heading: 0 }, straight, one)
+      const farOff = readSensors({ x: 300, y: 600, heading: 0 }, straight, one)
+      expect(onEdge.lineLost).toBe(false)
+      expect(farOff.lineLost).toBe(false)
+    })
+
+    it('gives a non-zero, direction-sensitive error as the robot drifts', () => {
+      const left = readSensors({ x: 300, y: 340, heading: 0 }, straight, one)
+      const right = readSensors({ x: 300, y: 360, heading: 0 }, straight, one)
+      expect(left.error).not.toBe(0)
+      expect(right.error).not.toBe(0)
+      expect(left.error).not.toBeCloseTo(right.error)
+    })
+
+    it('saturates at +-0.5 once fully on or off the line', () => {
+      const deepOnLine = readSensors({ x: 300, y: 345, heading: 0 }, straight, one)
+      const wayOff = readSensors({ x: 300, y: 600, heading: 0 }, straight, one)
+      expect(Math.abs(deepOnLine.error)).toBeLessThanOrEqual(0.5)
+      expect(Math.abs(wayOff.error)).toBeCloseTo(0.5, 1)
+    })
+  })
 })

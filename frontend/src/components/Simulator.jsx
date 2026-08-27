@@ -111,6 +111,7 @@ export default function Simulator() {
           </div>
           <div className="text-muted mt-1" style={{ fontSize: '0.72rem' }}>
             {platform.motor_max_rpm} RPM · ⌀{platform.wheel_diameter_mm}mm ·
+            {' '}wheelbase {platform.wheelbase_mm ?? 90}mm ·
             {' '}top ~{topSpeed(platform)} · loop {platform.loop_time_ms}ms ·
             {' '}{platform.code_target}
           </div>

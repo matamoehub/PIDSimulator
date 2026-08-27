@@ -22,9 +22,10 @@ const MAX_SUBSTEP_MM = 6 // split long moves so fast robots don't teleport
  * @param right right motor command
  * @param dt    seconds
  * @param speedPerCmd mm/s per command unit (defaults to the legacy constant)
+ * @param wheelbaseMm distance between the two drive wheels (defaults to the legacy constant)
  * @returns new pose
  */
-export function stepKinematics(pose, left, right, dt, speedPerCmd = SPEED_TO_MMS) {
+export function stepKinematics(pose, left, right, dt, speedPerCmd = SPEED_TO_MMS, wheelbaseMm = WHEEL_BASE_MM) {
   let vL = left * speedPerCmd
   let vR = right * speedPerCmd
 
@@ -43,7 +44,7 @@ export function stepKinematics(pose, left, right, dt, speedPerCmd = SPEED_TO_MMS
 
   let { x, y, heading } = pose
   const v = (vL + vR) / 2
-  const omega = (vR - vL) / WHEEL_BASE_MM
+  const omega = (vR - vL) / wheelbaseMm
   for (let i = 0; i < nSub; i++) {
     const hMid = heading + (omega * sub) / 2
     x += v * Math.cos(hMid) * sub

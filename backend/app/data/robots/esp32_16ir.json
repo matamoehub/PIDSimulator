@@ -15,5 +15,6 @@
   "loop_time_ms": 8,
   "code_target": "arduino",
   "icon": "ir16",
-  "wheel_diameter_mm": 32.0
+  "wheel_diameter_mm": 32.0,
+  "wheelbase_mm": 100
 }
