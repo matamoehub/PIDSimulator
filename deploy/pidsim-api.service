@@ -23,6 +23,10 @@ Group=matamoe
 WorkingDirectory=/opt/robot/pidsim/backend
 Environment=PIDSIM_DATA_DIR=/opt/robot/pidsim/data
 Environment=PIDSIM_LOG_DIR=/opt/robot/pidsim/logs
+# Shared secret required by /api/admin/{deploy,test,restart} (X-Admin-Token
+# header). Without this set, those routes return 503. Generate one with
+# `openssl rand -hex 32` and set it here — do NOT commit a real value.
+Environment=PIDSIM_ADMIN_TOKEN=changeme-generate-a-real-token
 ExecStart=/opt/robot/pidsim/backend/.venv/bin/gunicorn app.main:app \
     --workers 2 \
     --worker-class uvicorn.workers.UvicornWorker \

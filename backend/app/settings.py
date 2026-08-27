@@ -20,6 +20,11 @@ ROBOTS_DIR = DATA_DIR / "robots"
 # <repo>/logs.
 LOG_DIR = Path(os.environ.get("PIDSIM_LOG_DIR", REPO_ROOT / "logs"))
 
+# Shared-secret token gating the deploy/test/restart admin routes (defense in
+# depth alongside nginx's HTTP Basic Auth — see backend/app/routers/admin.py).
+# Unset locally by default; production systemd sets PIDSIM_ADMIN_TOKEN.
+ADMIN_TOKEN = os.environ.get("PIDSIM_ADMIN_TOKEN")
+
 
 def ensure_data_dirs() -> None:
     TRACKS_DIR.mkdir(parents=True, exist_ok=True)

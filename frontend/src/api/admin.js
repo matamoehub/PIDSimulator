@@ -1,8 +1,27 @@
 // Admin/ops API helpers. All under /api/admin (restricted by nginx in prod).
 const BASE = '/api/admin'
+const TOKEN_KEY = 'pidsim_admin_token'
 
-async function post(path) {
-  const res = await fetch(`${BASE}${path}`, { method: 'POST' })
+// The deploy/test/restart routes also require the X-Admin-Token header
+// (app-level gate, in addition to nginx's Basic Auth) — see
+// backend/app/routers/admin.py. Ask for it once per tab and remember it.
+export function getAdminToken() {
+  let token = sessionStorage.getItem(TOKEN_KEY)
+  if (!token) {
+    token = window.prompt('Admin token (X-Admin-Token) for deploy/test/restart:') || ''
+    if (token) sessionStorage.setItem(TOKEN_KEY, token)
+  }
+  return token
+}
+
+export function clearAdminToken() {
+  sessionStorage.removeItem(TOKEN_KEY)
+}
+
+async function post(path, { auth = false } = {}) {
+  const headers = auth ? { 'X-Admin-Token': getAdminToken() } : undefined
+  const res = await fetch(`${BASE}${path}`, { method: 'POST', headers })
+  if (auth && (res.status === 401 || res.status === 503)) clearAdminToken()
   if (!res.ok) throw new Error(`${path} -> ${res.status}`)
   return res.json()
 }
@@ -23,9 +42,9 @@ async function upload(path, file) {
 }
 
 export const getStatus = () => get('/status')
-export const runDeploy = () => post('/deploy')
-export const runTests = () => post('/test')
-export const restart = () => post('/restart')
+export const runDeploy = () => post('/deploy', { auth: true })
+export const runTests = () => post('/test', { auth: true })
+export const restart = () => post('/restart', { auth: true })
 export const listRobots = () => get('/robots')
 export const listCourses = () => get('/courses')
 export const uploadRobot = (file) => upload('/robots', file)

@@ -56,6 +56,9 @@ def reload_service() -> dict:
         capture_output=True, text=True,
     )
     label, cmd = "Reload service", f"kill -HUP $(systemctl show {SERVICE} -p MainPID --value)"
+    if r.returncode != 0:
+        return {"label": label, "cmd": cmd, "rc": 1, "stdout": "",
+                "stderr": f"systemctl show {SERVICE} exited {r.returncode}: {r.stderr.strip()}"}
     try:
         pid = int(r.stdout.strip())
         if pid <= 0:

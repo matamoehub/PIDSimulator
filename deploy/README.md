@@ -71,3 +71,25 @@ To change the PIN later, re-run the command with a new value.
 **Note:** on plain HTTP the PIN is sent unencrypted. Add SSL before exposing
 this widely, and optionally also restrict `/api/admin/` by source IP (the
 `allow`/`deny` block in `nginx.conf`).
+
+## Admin token (app-level gate on deploy/test/restart)
+
+nginx's Basic Auth above is a proxy-layer control — if nginx is ever
+misconfigured or bypassed, `/api/admin/deploy`, `/api/admin/test`, and
+`/api/admin/restart` would otherwise run `git pull` / `pip install` / `npm
+ci`+`build` / a service reload for anyone who can reach the port. As defense
+in depth, the FastAPI app itself requires a shared-secret `X-Admin-Token`
+header on those three routes, checked against `PIDSIM_ADMIN_TOKEN`. If that
+env var isn't set, the routes return `503` instead of falling back to a
+default token.
+
+Set it in the systemd unit (see `deploy/pidsim-api.service`):
+
+```bash
+sudo systemctl edit pidsim-api   # or edit the Environment= line directly
+# Environment=PIDSIM_ADMIN_TOKEN=<output of: openssl rand -hex 32>
+sudo systemctl daemon-reload && sudo systemctl restart pidsim-api
+```
+
+The Admin page prompts for this token in the browser the first time you click
+Deploy/Test/Restart in a tab and remembers it in `sessionStorage` for that tab.
